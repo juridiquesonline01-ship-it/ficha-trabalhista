@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha de Atendimento Trabalhista</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F5F2ED;
+    --card: #FFFFFF;
+    --accent: #1A3A2A;
+    --accent-light: #2D5C41;
+    --gold: #B8922A;
+    --text: #1C1C1A;
+    --muted: #6B6860;
+    --border: #D8D4CC;
+    --input-bg: #FAF9F7;
+    --section-bg: #F0EDE7;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  .header {
+    max-width: 760px;
+    margin: 0 auto 40px;
+    border-left: 4px solid var(--gold);
+    padding-left: 20px;
+  }
+
+  .header .subtitle {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1.2;
+  }
+
+  .header p {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  form {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .section {
+    background: var(--card);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .section-header {
+    background: var(--accent);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-header .num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    letter-spacing: 0.3px;
+  }
+
+  .section-body {
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .section-body.single {
+    grid-template-columns: 1fr;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field.full {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="tel"],
+  textarea,
+  select {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    width: 100%;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--accent-light);
+    background: #fff;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.5;
+  }
+
+  .radio-group {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 10px 0 4px;
+  }
+
+  .radio-group label {
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 14px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-weight: 400;
+  }
+
+  input[type="radio"] {
+    accent-color: var(--accent);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .conditional {
+    display: none;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+  }
+
+  .conditional label {
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .horario-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 12px;
+  }
+
+  .submit-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  button[type="reset"] {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 13px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  button[type="reset"]:hover { border-color: var(--muted); color: var(--text); }
+
+  button[type="submit"] {
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    padding: 13px 36px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: background 0.2s;
+  }
+
+  button[type="submit"]:hover { background: var(--accent-light); }
+
+  .print-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  @media (max-width: 560px) {
+    .section-body { grid-template-columns: 1fr; }
+    .horario-row { grid-template-columns: 1fr 1fr; }
+    .header h1 { font-size: 26px; }
+  }
+
+  @media print {
+    body { background: #fff; padding: 20px; }
+    .section { border: 1px solid #ccc; break-inside: avoid; }
+    .submit-row, .print-note { display: none; }
+    input, textarea, select { border: 1px solid #aaa; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="subtitle">Advocacia Trabalhista</div>
+  <h1>Ficha de Atendimento</h1>
+  <p>Preencha todos os campos com atenção. As informações são confidenciais.</p>
+</div>
+
+<form id="ficha" onsubmit="imprimir(event)">
+
+  <!-- 1. DADOS PESSOAIS -->
+  <div class="section">
+    <div class="section-header"><div class="num">1</div><h2>Dados Pessoais</h2></div>
+    <div class="section-body">
+      <div class="field full"><label>Nome completo</label><input type="text" name="nome" placeholder="Nome do cliente"></div>
+      <div class="field"><label>Telefone</label><input type="tel" name="telefone" placeholder="(xx) xxxxx-xxxx"></div>
+      <div class="field"><label>RG</label><input type="text" name="rg"></div>
+      <div class="field"><label>CPF</label><input type="text" name="cpf" placeholder="000.000.000-00"></div>
+      <div class="field"><label>PIS</label><input type="text" name="pis"></div>
+      <div class="field full"><label>Endereço</label><input type="text" name="endereco" placeholder="Rua, número, bairro, cidade"></div>
+      <div class="field full"><label>Nome da mãe</label><input type="text" name="nome_mae"></div>
+    </div>
+  </div>
+
+  <!-- 2. CTPS -->
+  <div class="section">
+    <div class="section-header"><div class="num">2</div><h2>Carteira de Trabalho (CTPS)</h2></div>
+    <div class="section-body">
+      <div class="field"><label>CTPS nº</label><input type="text" name="ctps_num"></div>
+      <div class="field"><label>Série</label><input type="text" name="ctps_serie"></div>
+      <div class="field full">
+        <label>Houve trabalho sem anotação na CTPS?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="sem_anotacao" value="sim"> Sim</label>
+          <label><input type="radio" name="sem_anotacao" value="nao" checked> Não</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. DADOS DA EMPRESA -->
+  <div class="section">
+    <div class="section-header"><div class="num">3</div><h2>Dados da Empresa</h2></div>
+    <div class="section-body">
+      <div class="field full"><label>Nome da empresa</label><input type="text" name="empresa"></div>
+      <div class="field full"><label>Endereço da empresa</label><input type="text" name="empresa_endereco"></div>
+      <div class="field"><label>Data de admissão</label><input type="date" name="admissao"></div>
+      <div class="field"><label>Data de rescisão</label><input type="date" name="rescisao"></div>
+      <div class="field"><label>Função</label><input type="text" name="funcao"></div>
+      <div class="field"><label>Salário (R$)</label><input type="text" name="salario" placeholder="0,00"></div>
+      <div class="field full">
+        <label>Justa causa?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="justa_causa" value="sim"> Sim</label>
+          <label><input type="radio" name="justa_causa" value="nao" checked> Não</label>
+        </div>
+      </div>
+      <div class="field full">
+        <label>A empresa é prestadora de serviço para outra?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="prestadora" value="sim" onclick="toggle('prestadora_qual')"> Sim</label>
+          <label><input type="radio" name="prestadora" value="nao" checked onclick="toggle('prestadora_qual', true)"> Não</label>
+        </div>
+        <div class="conditional" id="prestadora_qual">
+          <label>Se sim, qual empresa tomadora?</label>
+          <input type="text" name="prestadora_qual">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. REMUNERAÇÃO -->
+  <div class="section">
+    <div class="section-header"><div class="num">4</div><h2>Remuneração</h2></div>
+    <div class="section-body">
+      <div class="field full">
+        <label>Pagamento "extra folha"?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="extra_folha" value="sim" onclick="toggle('extra_folha_val')"> Sim</label>
+          <label><input type="radio" name="extra_folha" value="nao" checked onclick="toggle('extra_folha_val', true)"> Não</label>
+        </div>
+        <div class="conditional" id="extra_folha_val">
+          <label>Quantia mensal (R$)</label>
+          <input type="text" name="extra_folha_valor" placeholder="0,00">
+        </div>
+      </div>
+      <div class="field full">
+        <label>Comissões?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="comissoes" value="sim" onclick="toggle('comissoes_val')"> Sim</label>
+          <label><input type="radio" name="comissoes" value="nao" checked onclick="toggle('comissoes_val', true)"> Não</label>
+        </div>
+        <div class="conditional" id="comissoes_val">
+          <label>Média mensal (R$)</label>
+          <input type="text" name="comissoes_media" placeholder="0,00">
+          <label style="margin-top:10px;">Em quais meses havia acréscimo das comissões?</label>
+          <input type="text" name="comissoes_meses" placeholder="Ex: dezembro, janeiro">
+        </div>
+      </div>
+      <div class="field full">
+        <label>PLR — havia previsão?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="plr" value="sim" onclick="toggle('plr_val')"> Sim</label>
+          <label><input type="radio" name="plr" value="nao" checked onclick="toggle('plr_val', true)"> Não</label>
+        </div>
+        <div class="conditional" id="plr_val">
+          <label>Houve pagamento?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="plr_pago" value="sim"> Sim</label>
+            <label><input type="radio" name="plr_pago" value="nao"> Não</label>
+          </div>
+        </div>
+      </div>
+      <div class="field full">
+        <label>Equiparação salarial?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="equiparacao" value="sim" onclick="toggle('equiparacao_val')"> Sim</label>
+          <label><input type="radio" name="equiparacao" value="nao" checked onclick="toggle('equiparacao_val', true)"> Não</label>
+        </div>
+        <div class="conditional" id="equiparacao_val">
+          <label>Nome do paradigma</label>
+          <input type="text" name="paradigma_nome">
+          <label style="margin-top:10px;">Em que consistiam as atividades do paradigma?</label>
+          <textarea name="paradigma_atividades" rows="3"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. JORNADA -->
+  <div class="section">
+    <div class="section-header"><div class="num">5</div><h2>Jornada de Trabalho</h2></div>
+    <div class="section-body single">
+      <div class="field">
+        <label>Horário de trabalho</label>
+        <div class="horario-row">
+          <div><label style="margin-bottom:4px;">Entrada</label><input type="text" name="hora_entrada" placeholder="08:00"></div>
+          <div><label style="margin-bottom:4px;">Saída</label><input type="text" name="hora_saida" placeholder="17:00"></div>
+          <div><label style="margin-bottom:4px;">De segunda a</label><input type="text" name="dias_semana" placeholder="sexta-feira"></div>
+          <div><label style="margin-bottom:4px;">Intervalo</label><input type="text" name="intervalo" placeholder="1h"></div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Havia trabalho em domingos e feriados?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="dom_fer" value="sim" onclick="toggle('dom_fer_val')"> Sim</label>
+          <label><input type="radio" name="dom_fer" value="nao" checked onclick="toggle('dom_fer_val', true)"> Não</label>
+        </div>
+        <div class="conditional" id="dom_fer_val">
+          <label>Horário e intervalo nesses dias</label>
+          <input type="text" name="dom_fer_horario" placeholder="Ex: 08h às 13h, sem intervalo">
+        </div>
+      </div>
+      <div class="field">
+        <label>Havia pagamento integral das horas extras?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="horas_extras" value="sim"> Sim</label>
+          <label><input type="radio" name="horas_extras" value="nao"> Não</label>
+          <label><input type="radio" name="horas_extras" value="parcial"> Parcialmente</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Havia pagamento dos reflexos das horas extras?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="reflexos" value="sim"> Sim</label>
+          <label><input type="radio" name="reflexos" value="nao"> Não</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. BENEFÍCIOS E VERBAS -->
+  <div class="section">
+    <div class="section-header"><div class="num">6</div><h2>Férias, 13º Salário e Verbas Rescisórias</h2></div>
+    <div class="section-body single">
+      <div class="field">
+        <label>Férias — houve fruição de todas as férias?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="ferias" value="sim"> Sim</label>
+          <label><input type="radio" name="ferias" value="nao" onclick="toggle('ferias_val')"> Não</label>
+        </div>
+        <div class="conditional" id="ferias_val">
+          <label>Quais os períodos faltantes?</label>
+          <input type="text" name="ferias_periodos" placeholder="Ex: 2022/2023, 2023/2024">
+        </div>
+      </div>
+      <div class="field">
+        <label>13º salário — houve pagamento correto dos valores?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="decimo_terceiro" value="sim"> Sim</label>
+          <label><input type="radio" name="decimo_terceiro" value="nao"> Não</label>
+          <label><input type="radio" name="decimo_terceiro" value="parcial"> Parcialmente</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Verbas rescisórias — o pagamento está correto?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="verbas_correto" value="sim"> Sim</label>
+          <label><input type="radio" name="verbas_correto" value="nao"> Não</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>O pagamento das verbas se deu dentro do prazo?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="verbas_prazo" value="sim"> Sim</label>
+          <label><input type="radio" name="verbas_prazo" value="nao"> Não</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>FGTS — os depósitos estão corretos?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="fgts" value="sim"> Sim</label>
+          <label><input type="radio" name="fgts" value="nao"> Não</label>
+          <label><input type="radio" name="fgts" value="nao_sabe"> Não sabe</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. CONDIÇÕES DE TRABALHO -->
+  <div class="section">
+    <div class="section-header"><div class="num">7</div><h2>Condições de Trabalho</h2></div>
+    <div class="section-body single">
+      <div class="field">
+        <label>Insalubridade — trabalhava em condições insalubres?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="insalubridade" value="sim" onclick="toggle('insalubridade_val')"> Sim</label>
+          <label><input type="radio" name="insalubridade" value="nao" checked onclick="toggle('insalubridade_val', true)"> Não</label>
+        </div>
+        <div class="conditional" id="insalubridade_val">
+          <label>Tipo de agente insalubre</label>
+          <input type="text" name="insalubridade_tipo" placeholder="frio, ruído, umidade, agentes químicos, biológico...">
+        </div>
+      </div>
+      <div class="field">
+        <label>Periculosidade</label>
+        <div class="radio-group">
+          <label><input type="radio" name="periculosidade" value="sim" onclick="toggle('periculosidade_val')"> Sim</label>
+          <label><input type="radio" name="periculosidade" value="nao" checked onclick="toggle('periculosidade_val', true)"> Não</label>
+        </div>
+        <div class="conditional" id="periculosidade_val">
+          <label>Tipo</label>
+          <input type="text" name="periculosidade_tipo" placeholder="inflamável, explosivo, eletricidade, segurança, motocicleta...">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. ACIDENTE DE TRABALHO -->
+  <div class="section">
+    <div class="section-header"><div class="num">8</div><h2>Acidente de Trabalho</h2></div>
+    <div class="section-body single">
+      <div class="field">
+        <label>Houve acidente de trabalho?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="acidente" value="sim" onclick="toggle('acidente_det')"> Sim</label>
+          <label><input type="radio" name="acidente" value="nao" checked onclick="toggle('acidente_det', true)"> Não</label>
+        </div>
+      </div>
+      <div class="conditional" id="acidente_det">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+          <div class="field">
+            <label>Afastamento por mais de 15 dias?</label>
+            <div class="radio-group">
+              <label><input type="radio" name="afastamento" value="sim"> Sim</label>
+              <label><input type="radio" name="afastamento" value="nao"> Não</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Houve emissão de CAT?</label>
+            <div class="radio-group">
+              <label><input type="radio" name="cat" value="sim"> Sim</label>
+              <label><input type="radio" name="cat" value="nao"> Não</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>Há sequelas?</label>
+            <div class="radio-group">
+              <label><input type="radio" name="sequelas" value="sim"> Sim</label>
+              <label><input type="radio" name="sequelas" value="nao"> Não</label>
+            </div>
+          </div>
+          <div class="field">
+            <label>A empresa deu assistência?</label>
+            <div class="radio-group">
+              <label><input type="radio" name="assistencia" value="sim"> Sim</label>
+              <label><input type="radio" name="assistencia" value="nao"> Não</label>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label>Como ocorreu o acidente?</label>
+          <textarea name="acidente_desc" rows="4" placeholder="Descreva as circunstâncias do acidente..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. INFORMAÇÕES ADICIONAIS -->
+  <div class="section">
+    <div class="section-header"><div class="num">9</div><h2>Informações Adicionais</h2></div>
+    <div class="section-body single">
+      <div class="field">
+        <label>Dano moral</label>
+        <div class="radio-group">
+          <label><input type="radio" name="dano_moral" value="sim" onclick="toggle('dano_moral_val')"> Sim</label>
+          <label><input type="radio" name="dano_moral" value="nao" checked onclick="toggle('dano_moral_val', true)"> Não</label>
+        </div>
+        <div class="conditional" id="dano_moral_val">
+          <label>Descreva</label>
+          <textarea name="dano_moral_desc" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="field">
+        <label>Algum outro fato não perguntado?</label>
+        <textarea name="outros" rows="4" placeholder="Informe qualquer fato relevante que não foi abordado acima..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-row">
+    <button type="reset">Limpar</button>
+    <button type="submit">Imprimir / Salvar PDF</button>
+  </div>
+  <p class="print-note">Use Ctrl+P (ou Cmd+P) para imprimir ou salvar como PDF após clicar no botão acima.</p>
+
+</form>
+
+<script>
+function toggle(id, hide) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.display = hide ? 'none' : 'block';
+}
+
+function imprimir(e) {
+  e.preventDefault();
+  window.print();
+}
+
+document.querySelectorAll('input[type="radio"]').forEach(r => {
+  r.addEventListener('change', function() {
+    const name = this.name;
+    const map = {
+      prestadora: 'prestadora_qual',
+      extra_folha: 'extra_folha_val',
+      comissoes: 'comissoes_val',
+      plr: 'plr_val',
+      equiparacao: 'equiparacao_val',
+      dom_fer: 'dom_fer_val',
+      ferias: 'ferias_val',
+      insalubridade: 'insalubridade_val',
+      periculosidade: 'periculosidade_val',
+      acidente: 'acidente_det',
+      dano_moral: 'dano_moral_val',
+    };
+    if (map[name]) {
+      const target = document.getElementById(map[name]);
+      if (target) target.style.display = this.value === 'sim' ? 'block' : 'none';
+    }
+  });
+});
+</script>
+</body>
+</html>
